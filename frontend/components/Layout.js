@@ -41,80 +41,6 @@ export default function Layout({ children }) {
     };
   };
 
-  const dragAndDrop = () => {
-    var dropArea = document.getElementById('drag-and-drop');
-
-    // Prevent default drag behaviors
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-      dropArea.addEventListener(eventName, preventDefaults, false);
-    });
-    
-    // Highlight drop area when dragging over
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropArea.addEventListener(eventName, highlight, false);
-    });
-    
-    // Unhighlight drop area when dragging over
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropArea.addEventListener(eventName, unhighlight, false);
-    });
-    
-    // Handle dropped files
-    dropArea.addEventListener('drop', handleDrop, false);
-    
-    function preventDefaults(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    
-    function highlight(e) {
-      dropArea.classList.add('highlight');
-    }
-    
-    function unhighlight(e) {
-      dropArea.classList.remove('highlight');
-    }
-    
-    function handleDrop(e) {
-      var dt = e.dataTransfer;
-      var files = dt.files;
-    
-      handleFiles(files);
-    }
-    
-    function handleFiles(files) {
-      files = [...files];
-      files.forEach(uploadFile);
-    }
-    
-    async function uploadFile(file) {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      try {
-        console.log("uploadFile 2");
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-        console.log("uploadFile 3");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        console.log("uploadFile 4");
-        const { filename } = await response.json();
-        console.log(response.json());
-        console.log(`File uploaded successfully. Server returned filename: ${filename}`);
-      } catch (error) {
-        console.error('Error uploading file:', error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    dragAndDrop();
-  }, []);
-
   useEffect(() => {
     setAppTheme();
   }, []);
@@ -127,10 +53,6 @@ export default function Layout({ children }) {
     <div className="relative pb-24 overflow-hidden">
     <div className="flex flex-col items-center max-w-2xl w-full mx-auto">
       {children}
-      <div id="drag-and-drop" className="my-8 p-8 border-4 border-dashed border-gray-400 rounded-lg text-center">
-        <p className="text-lg font-semibold text-gray-500">Drag and drop your image files here</p>
-        <input type="file" id="file-input" accept=".jpg, .jpeg, .png" className="hidden" />
-      </div>
     </div>
   </div>
 
