@@ -10,7 +10,6 @@ import SEO from '../components/SEO';
 
 
 import React, { useReducer } from "react";
-import Head from "next/head";
 import DropZone from "../components/DropZone";
 import styles from "../styles/Home.module.css";
 
@@ -37,18 +36,13 @@ export default function Index({ posts, globalData }) {
     <Layout>
       <SEO title={globalData.name} description={globalData.blogTitle} />
       <Header name={globalData.name} />
-      <Head>
-        <title>Drag And Drop File Upload</title>
-        <meta name="description" content="Nextjs drag and drop file upload" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <main className="w-full">
-        <h1 className={styles.title}>Drag And Drop File Upload</h1>
+        <h1 className={styles.title}>Create your own Bitcoin Ordinals</h1>
           {/* Pass state data and dispatch to the DropZone component */}
           <DropZone data={data} dispatch={dispatch} />
-        <h1 className="text-3xl lg:text-5xl text-center mb-12">
+        <p className="text-3xl lg:text-5xl text-center mb-12">
           {globalData.blogTitle}
-        </h1>
+        </p>
         <ul className="w-full">
           {posts.map((post) => (
             <li
