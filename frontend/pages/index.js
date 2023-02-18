@@ -8,12 +8,44 @@ import ArrowIcon from '../components/ArrowIcon';
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
+
+import React, { useReducer } from "react";
+import Head from "next/head";
+import DropZone from "../components/DropZone";
+import styles from "../styles/Home.module.css";
+
 export default function Index({ posts, globalData }) {
+    // reducer function to handle state changes
+    const reducer = (state, action) => {
+      switch (action.type) {
+        case "SET_IN_DROP_ZONE":
+          return { ...state, inDropZone: action.inDropZone };
+        case "ADD_FILE_TO_LIST":
+          return { ...state, fileList: state.fileList.concat(action.files) };
+        default:
+          return state;
+      }
+    };
+  
+    // destructuring state and dispatch, initializing fileList to empty array
+    const [data, dispatch] = useReducer(reducer, {
+      inDropZone: false,
+      fileList: [],
+    });
+
   return (
     <Layout>
       <SEO title={globalData.name} description={globalData.blogTitle} />
       <Header name={globalData.name} />
+      <Head>
+        <title>Drag And Drop File Upload</title>
+        <meta name="description" content="Nextjs drag and drop file upload" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <main className="w-full">
+        <h1 className={styles.title}>Drag And Drop File Upload</h1>
+          {/* Pass state data and dispatch to the DropZone component */}
+          <DropZone data={data} dispatch={dispatch} />
         <h1 className="text-3xl lg:text-5xl text-center mb-12">
           {globalData.blogTitle}
         </h1>
