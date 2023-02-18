@@ -16,7 +16,6 @@ export function GradientBackground({ variant, className }) {
 
 export default function Layout({ children }) {
   const setAppTheme = () => {
-    console.log("setAppTheme");
     const darkMode = localStorage.getItem('theme') === 'dark';
     const lightMode = localStorage.getItem('theme') === 'light';
 
@@ -29,7 +28,6 @@ export default function Layout({ children }) {
   };
 
   const handleSystemThemeChange = () => {
-    console.log("handleSystemThemeChange");
     var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     darkQuery.onchange = (e) => {
@@ -44,7 +42,6 @@ export default function Layout({ children }) {
   };
 
   const dragAndDrop = () => {
-    console.log("drag and drop");
     var dropArea = document.getElementById('drag-and-drop');
 
     // Prevent default drag behaviors
@@ -95,15 +92,16 @@ export default function Layout({ children }) {
       formData.append('file', file);
 
       try {
+        console.log("uploadFile 2");
         const response = await fetch('/api/upload', {
           method: 'POST',
           body: formData,
         });
-    
+        console.log("uploadFile 3");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
+        console.log("uploadFile 4");
         const { filename } = await response.json();
         console.log(response.json());
         console.log(`File uploaded successfully. Server returned filename: ${filename}`);

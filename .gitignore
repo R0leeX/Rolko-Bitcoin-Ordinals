@@ -9,8 +9,8 @@
 /coverage
 
 # next.js
-/.next/
-/out/
+frontend/.next/
+frontend/out/
 
 # production
 /build
@@ -37,5 +37,5 @@ yarn-error.log*
 .netlify
 
 # node modules
-./frontend/node_modules
-
+backend/rolko/target/
+frontend/node_modules/
