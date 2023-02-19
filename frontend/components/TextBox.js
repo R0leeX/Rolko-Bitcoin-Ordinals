@@ -6,8 +6,23 @@ function BitcoinAddressForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(`Submitted address: ${bitcoinAddress}`);
-    // TODO: Send it to backend
+    fetch('/api/send-address', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ address: bitcoinAddress })
+    })
+    .then(response => {
+      if (response.ok) {
+        alert('Address submitted successfully!');
+      } else {
+        throw new Error('Failed to submit address');
+      }
+    })
+    .catch(error => {
+      alert(`Error submitting address: ${error.message}`);
+    });
   }
 
   return (
@@ -18,7 +33,7 @@ function BitcoinAddressForm() {
         type="text"
         value={bitcoinAddress}
         onChange={(event) => setBitcoinAddress(event.target.value)}
-        placeholder="" style={{width: "510px"}}
+        placeholder="" style={{width: "510px", color: "black"}}
         required
       />
       <button className={styles.uploadBtn} onClick={handleSubmit}>
