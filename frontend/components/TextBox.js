@@ -1,28 +1,53 @@
 import { useState } from 'react';
 import styles from "../styles/DropZone.module.css";
 
+
+function ValidateAddress() {
+  fetch('/api/validate-address', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ address: bitcoinAddress })
+  })
+  .then(response => {
+    if (response.ok) {
+      GenerateInvoices();
+    } else {
+      throw new Error('Failed to submit address');
+    }
+  })
+  .catch(error => {
+    alert(`Error submitting address: ${error.message}`);
+  });
+}
+
+function GenerateInvoices() {
+  fetch('/api/generate-invoices', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ address: bitcoinAddress })
+  })
+  .then(response => {
+    if (response.ok) {
+      //TODO: Show invoice on website.
+    } else {
+      throw new Error('Failed to submit address');
+    }
+  })
+  .catch(error => {
+    alert(`Error submitting address: ${error.message}`);
+  });
+}
+
 function BitcoinAddressForm() {
   const [bitcoinAddress, setBitcoinAddress] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch('/api/send-address', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ address: bitcoinAddress })
-    })
-    .then(response => {
-      if (response.ok) {
-        alert('Address submitted successfully!');
-      } else {
-        throw new Error('Failed to submit address');
-      }
-    })
-    .catch(error => {
-      alert(`Error submitting address: ${error.message}`);
-    });
+    ValidateAddress();
   }
 
   return (

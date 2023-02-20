@@ -271,6 +271,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4a4ddaa51a5bc52a6948f74c06d20aaaddb71924eab79b8c97a8c556e942d6a"
 
 [[package]]
+name = "base64-compat"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5a8d4d2746f89841e49230dd26917df1876050f95abafafbe34f47cb534b88d7"
+dependencies = [
+ "byteorder",
+]
+
+[[package]]
 name = "bech32"
 version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -285,6 +294,7 @@ dependencies = [
  "bech32",
  "bitcoin_hashes",
  "secp256k1",
+ "serde",
 ]
 
 [[package]]
@@ -292,6 +302,33 @@ name = "bitcoin_hashes"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "90064b8dee6815a6470d60bad07bbbaee885c0e12d04177138fa3291a01b7bc4"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "bitcoincore-rpc"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0261b2bb7617e0c91b452a837bbd1291fd34ad6990cb8e3ffc28239cc045b5ca"
+dependencies = [
+ "bitcoincore-rpc-json",
+ "jsonrpc",
+ "log",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "bitcoincore-rpc-json"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c231bea28e314879c5aef240f6052e8a72a369e3c9f9b20d9bfbb33ad18029b2"
+dependencies = [
+ "bitcoin",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "bitflags"
@@ -328,6 +365,12 @@ dependencies = [
  "alloc-no-stdlib",
  "alloc-stdlib",
 ]
+
+[[package]]
+name = "byteorder"
+version = "1.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
 
 [[package]]
 name = "bytes"
@@ -664,6 +707,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "jsonrpc"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f8423b78fc94d12ef1a4a9d13c348c9a78766dda0cc18817adf0faf77e670c8"
+dependencies = [
+ "base64-compat",
+ "serde",
+ "serde_derive",
+ "serde_json",
+]
+
+[[package]]
 name = "language-tags"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -680,6 +735,28 @@ name = "libc"
 version = "0.2.139"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "201de327520df007757c1f0adce6e827fe8562fbc28bfd9c15571c66ca1f5f79"
+
+[[package]]
+name = "lightning"
+version = "0.0.113"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "087add70f81d2fdc6d4409bc0cef69e11ad366ef1d0068550159bd22b3ac8664"
+dependencies = [
+ "bitcoin",
+]
+
+[[package]]
+name = "lightning-invoice"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e9680857590c3529cf8c7d32b04501f215f2bf1e029fdfa22f4112f66c1741e4"
+dependencies = [
+ "bech32",
+ "bitcoin_hashes",
+ "lightning",
+ "num-traits",
+ "secp256k1",
+]
 
 [[package]]
 name = "local-channel"
@@ -749,6 +826,15 @@ dependencies = [
  "log",
  "wasi",
  "windows-sys 0.45.0",
+]
+
+[[package]]
+name = "num-traits"
+version = "0.2.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "578ede34cf02f8924ab9447f50c28075b4d3e5b269972345e7e0372b38c6cdcd"
+dependencies = [
+ "autocfg",
 ]
 
 [[package]]
@@ -909,9 +995,14 @@ dependencies = [
  "actix-rt",
  "actix-web",
  "bitcoin",
+ "bitcoin_hashes",
+ "bitcoincore-rpc",
  "futures",
  "futures-util",
+ "lightning",
+ "lightning-invoice",
  "sanitize-filename",
+ "secp256k1",
  "serde",
  "serde_json",
  "uuid",
@@ -956,6 +1047,7 @@ checksum = "6b1629c9c557ef9b293568b338dddfc8208c98a18c59d722a9d53f859d9c9b62"
 dependencies = [
  "bitcoin_hashes",
  "secp256k1-sys",
+ "serde",
 ]
 
 [[package]]

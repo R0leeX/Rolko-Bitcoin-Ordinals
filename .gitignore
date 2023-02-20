@@ -37,5 +37,8 @@ yarn-error.log*
 .netlify
 
 # node modules
-backend/rolko/target/
 frontend/node_modules/
+
+# rust
+backend/rolko/target/
+backend/rolko/src/uploads/

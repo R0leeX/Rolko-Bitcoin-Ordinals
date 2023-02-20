@@ -81,7 +81,7 @@ const DropZone = ({ data, dispatch }) => {
 
     // Upload the files as a POST request to the server using fetch
     // Note: /api/fileupload is not a real endpoint, it is just an example
-    const response = await fetch("/api/fileupload", {
+    const response = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
