@@ -9,8 +9,8 @@ use uuid::Uuid;
 use serde::Deserialize;
 
 // Bitcoin
-pub mod rolko_bitcoin;
-use rolko_bitcoin::*;
+pub mod bitcoin_helper;
+pub mod btcpay;
 
 // Logging
 use log::{info};
@@ -55,7 +55,7 @@ struct BitcoinAddress {
 async fn send_address(data: web::Json<BitcoinAddress>) -> Result<HttpResponse, Error> {
     let bitcoin_address = &data.address;
 
-    if !process_bitcoin_address(&bitcoin_address) {
+    if !bitcoin_helper::process_bitcoin_address(&bitcoin_address) {
         return Err(error::ErrorBadRequest("Processing request failed"));
     } else {
          // Return a response indicating success
@@ -69,7 +69,7 @@ async fn send_address(data: web::Json<BitcoinAddress>) -> Result<HttpResponse, E
 async fn validate_address(data: web::Json<BitcoinAddress>) -> Result<HttpResponse, Error> {
     // Extract the Bitcoin address from the JSON payload
     let bitcoin_address = &data.address;
-    if !is_valid_bitcoin_address(&bitcoin_address) {
+    if !bitcoin_helper::is_valid_bitcoin_address(&bitcoin_address) {
         return Err(error::ErrorBadRequest("Invalid bitcoin address"));
     } else {
         // Return a response indicating success
@@ -77,15 +77,15 @@ async fn validate_address(data: web::Json<BitcoinAddress>) -> Result<HttpRespons
     }
 }
 
-async fn generate_invoices(data: web::Json<BitcoinAddress>) -> Result<actix_web::web::Json<InvoiceResponse>, Error> {
+async fn generate_invoices(data: web::Json<BitcoinAddress>) -> Result<actix_web::web::Json<btcpay::InvoiceResponse>, Error> {
    
-    let invoice_resp = InvoiceResponse {
-        lightning_invoice : generate_lightning_invoice(),
-        bitcoin_invoice : generate_bitcoin_invoice(),
+    let invoice_resp = btcpay::InvoiceResponse {
+        lightning_invoice : btcpay::generate_lightning_invoice().await.unwrap(),
+        bitcoin_invoice : btcpay::generate_bitcoin_invoice().await.unwrap(),
     };
 
-    monitor_lightning_invoice(&invoice_resp.lightning_invoice); 
-    monitor_bitcoin_invoice(&invoice_resp.bitcoin_invoice); // maybe monitor bitcoin wallet is better
+    //monitor_lightning_invoice(&invoice_resp.lightning_invoice); 
+    //monitor_bitcoin_invoice(&invoice_resp.bitcoin_invoice); // maybe monitor bitcoin wallet is better
 
     Ok(web::Json(invoice_resp))
 }

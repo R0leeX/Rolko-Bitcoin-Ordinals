@@ -1,26 +1,12 @@
 // bitcoin related things
 use bitcoin::{Address, Network};
 use std::str::FromStr;
-use serde::Serialize;
-
-
-#[derive(Serialize)]
-pub struct InvoiceResponse {
-    pub lightning_invoice: String,
-    pub bitcoin_invoice: String,
-}
 
 pub fn is_valid_bitcoin_address(address_str: &str) -> bool {
     if let Ok(bitcoin_address) = Address::from_str(address_str) {
         return bitcoin_address.is_valid_for_network(Network::Bitcoin); // TODO: Also check if address is Taproot address
     }
     false
-}
-
-// https://docs.rs/lightning-invoice/0.21.0/lightning_invoice/struct.InvoiceBuilder.html#method.amount_milli_satoshis
-pub fn generate_lightning_invoice() -> String {
-
-    "".to_string()
 }
 
 pub fn generate_bitcoin_invoice() -> String {
