@@ -10,7 +10,12 @@ use serde::Deserialize;
 
 // Bitcoin
 pub mod rolko_bitcoin;
-use crate::rolko_bitcoin::rolko_bitcoin::*;
+use rolko_bitcoin::*;
+
+// Logging
+use log::{info};
+
+pub mod common;
 
 async fn upload(mut payload: Multipart) ->  Result<HttpResponse, Error> {
     // iterate over multipart stream
@@ -23,22 +28,22 @@ async fn upload(mut payload: Multipart) ->  Result<HttpResponse, Error> {
         .map_or_else(|| Uuid::new_v4().to_string(), sanitize_filename::sanitize);
 
         let filepath = format!("./uploads/{filename}");
-        println!("upload 3");
-        println!("{}", filepath);
+
         // File::create is blocking operation, use threadpool
         let mut f = web::block(|| std::fs::File::create(filepath)).await??;
-        println!("upload 4");
+
         // Field in turn is stream of *Bytes* object
         while let Some(chunk) = field.try_next().await? {
-            println!("upload 5");
             // filesystem operations are blocking, we have to use threadpool
             f = web::block(move || f.write_all(&chunk).map(|_| f)).await??;
         }
+        info!("File uploaded: {}", format!("./uploads/{filename}"));
     }
 
     // TODO:
     // let fee = estimate_fee() // Economy (Default), Normal, Custom
     // fee.network_fee; fee.service_fee -> 25k Satoshi + 10% of network fee
+
 
     Ok(HttpResponse::Ok().body("File uploaded successfully"))
 }
@@ -72,8 +77,6 @@ async fn validate_address(data: web::Json<BitcoinAddress>) -> Result<HttpRespons
     }
 }
 
-
-
 async fn generate_invoices(data: web::Json<BitcoinAddress>) -> Result<actix_web::web::Json<InvoiceResponse>, Error> {
    
     let invoice_resp = InvoiceResponse {
@@ -89,6 +92,7 @@ async fn generate_invoices(data: web::Json<BitcoinAddress>) -> Result<actix_web:
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    info!("Rolko-Backend Starting...");
     HttpServer::new(|| {
         let cors = Cors::default()
             .allowed_origin("http://localhost:3000")

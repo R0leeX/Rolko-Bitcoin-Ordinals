@@ -42,3 +42,4 @@ frontend/node_modules/
 # rust
 backend/rolko/target/
 backend/rolko/src/uploads/
+backend/rolko/src/config_prod.toml
