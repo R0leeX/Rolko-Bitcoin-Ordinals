@@ -77,8 +77,7 @@ async fn validate_address(data: web::Json<BitcoinAddress>) -> Result<HttpRespons
     }
 }
 
-async fn generate_invoices(data: web::Json<BitcoinAddress>) -> Result<actix_web::web::Json<btcpay::InvoiceResponse>, Error> {
-   
+async fn generate_invoices(_data: web::Json<BitcoinAddress>) -> Result<actix_web::web::Json<btcpay::InvoiceResponse>, Error> {   
     let invoice_resp = btcpay::InvoiceResponse {
         lightning_invoice : btcpay::generate_lightning_invoice().await.unwrap(),
         bitcoin_invoice : btcpay::generate_bitcoin_invoice().await.unwrap(),

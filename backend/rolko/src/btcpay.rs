@@ -16,7 +16,7 @@ pub struct InvoiceResponse {
 // https://docs.rs/awc/latest/awc/index.html
 pub async fn generate_bitcoin_invoice() -> Result<String, reqwest::Error> {
     
-    let store_id = get_config().get_string("store_id");
+    let _store_id = get_config().get_string("store_id");
 
     let mut json_body = HashMap::new();
     json_body.insert("lang", "rust");

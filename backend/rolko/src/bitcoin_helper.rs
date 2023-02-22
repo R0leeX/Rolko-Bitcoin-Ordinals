@@ -30,17 +30,17 @@ pub fn generate_bitcoin_invoice() -> String {
     "".to_string()
 }
 
-pub fn process_bitcoin_address(bitcoin_address: &str) -> bool {
+pub fn process_bitcoin_address(_bitcoin_address: &str) -> bool {
 
     false
 }
 
-pub fn monitor_lightning_invoice(lightning_invoice: &str) 
+pub fn monitor_lightning_invoice(_lightning_invoice: &str) 
 {
     // https://github.com/Kixunil/tonic_lnd/blob/master/examples/subscribe_invoices.rs
 }
 
-pub fn monitor_bitcoin_invoice(bitcoin_invoice: &str)
+pub fn monitor_bitcoin_invoice(_bitcoin_invoice: &str)
 {
     // Check bitcoin_rpc how to handle
 }
